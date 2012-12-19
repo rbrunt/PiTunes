@@ -1,0 +1,64 @@
+<html doctype="html">
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script>
+	function ajaxRequest(url, callbackfunction, param1){ //param1 is optional, callbackfunction is not though an empty function is an ok parameter
+		if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}else{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	
+		xmlhttp.onreadystatechange=function(){ //Once the request has come back.
+			if (xmlhttp.readyState==4 && xmlhttp.status==200){
+				//Run your callbackfunction with a parameter.
+				callbackfunction(param1);
+			}
+		}
+
+		xmlhttp.open("GET",url,true); 
+		xmlhttp.send(); //Send the request
+	}
+	</script>
+	<script>
+	function add_li(list, text) {
+		var list = document.getElementById(list);
+		var li = document.createElement("li");
+		li.innerHTML = text;
+		list.appendChild(li);
+	}
+
+	function load_list(list, list_array) {
+		for (var i = 0; i < list_array.length; i++) {
+		add_li (list, list_array[i]);
+		}
+	} 
+
+	function getSearchResults(){
+		var searchterm = document.getElementById('target').value;
+		if (searchterm == "") {
+			document.getElementById("resultlist").innerHTML="<li>Type a search term</li>";
+		} else {
+			var url='http://localhost:8080/api/search/'+searchterm;
+			function callbackfunction(){
+				document.getElementById("resultlist").innerHTML="";
+				obj = JSON.parse(xmlhttp.responseText);
+				load_list("resultlist",obj.albums);
+				if (document.getElementById("resultlist").innerHTML=="") {
+					document.getElementById("resultlist").innerHTML="No Results!";
+				}
+			}
+			ajaxRequest(url, callbackfunction);
+		}
+	}
+	</script>
+</head>
+<body>
+	<input id="target" type="text" placeholder="Search Text goes here" onkeyup="getSearchResults()"><br>
+	<div id="results">
+	<ul id="resultlist">
+		Type a search term
+	</ul>	
+	</div>
+</body>
+</html>
