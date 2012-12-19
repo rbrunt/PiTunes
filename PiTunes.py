@@ -1,3 +1,7 @@
+"""
+
+"""
+
 from __future__ import division
 import mpd
 import time
@@ -7,6 +11,7 @@ import json
 import urllib
 import os
 import tornado.template
+import settings
 #from mutagen import File
 
 client = mpd.MPDClient()
@@ -37,8 +42,7 @@ def fadein(timer=0.4):
 def search(term,tag="any"):
 	searchterm = urllib.unquote(term)
 	results = client.search(tag,searchterm)
-	print term
-	print searchterm
+	print "Searching", tag, "for:", searchterm
 	#print "term: ", term, "tag: ", tag,"\n"
 	response = {
 		"songs":[],
@@ -136,31 +140,8 @@ application = tornado.web.Application(
 #	(r"/api/seek/([0-9]{1,3})",seekhandler)
 ])
 
-
-
-
-
-
-
 if __name__=="__main__":
-	application.listen(8080)
+	print "Starting web service on port %i..." % (settings.PORT)
+	application.listen(settings.PORT)
+	print "Server Started. Starting tornado ioloop..."
 	tornado.ioloop.IOLoop.instance().start()
-	while True:
-		print "Now Playing: \"%s\" from the album \"%s\" by \"%s\"." % (client.currentsong()['title'], client.currentsong()['album'], client.currentsong()['artist'])
-
-		input = raw_input("command: ")
-		if input == "pause":
-			print "pausing..."
-			fadeout(0.3)
-		elif input == "play":
-			print "playing..."
-			fadein(0.3)
-		elif input == "next":
-			print "next track..."
-			client.next()
-		elif input == "art":
-			getalbumart()
-		elif input=="q":
-			client.disconnect()
-			exit(0)
-
