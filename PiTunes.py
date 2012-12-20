@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 
 """
@@ -136,8 +137,8 @@ application = tornado.web.Application(
 	(r"/api/next", nexthandler),
 	(r"/api/previous", prevhandler),
 	(r"/api/search/(.*)(/[a-z]{1,6})?", searchhandler),
+#	(r"/api/seek/([0-9]{1,3})",seekhandler),
 	(r"/(.*)", MainHandler)
-#	(r"/api/seek/([0-9]{1,3})",seekhandler)
 ])
 
 if __name__=="__main__":
