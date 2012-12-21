@@ -17,7 +17,7 @@ PiTunes has a number of dependancies that need to be installed and set up before
 3. Python libraries:
 	*	[python-mpd2][pympd github]
 		*	This provides a simple client interface for mpd, so we can easily control it from python.
-	*	urllib
+	*	urllib2
 		*	This is used to deal with decoding url encoded strings for things like search terms. It is usually installed with your python distribution.
 
 Setup

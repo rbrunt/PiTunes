@@ -1,64 +1,81 @@
-<html doctype="html">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-	<script>
-	function ajaxRequest(url, callbackfunction, param1){ //param1 is optional, callbackfunction is not though an empty function is an ok parameter
-		if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}else{// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-	
-		xmlhttp.onreadystatechange=function(){ //Once the request has come back.
-			if (xmlhttp.readyState==4 && xmlhttp.status==200){
-				//Run your callbackfunction with a parameter.
-				callbackfunction(param1);
-			}
-		}
-
-		xmlhttp.open("GET",url,true); 
-		xmlhttp.send(); //Send the request
-	}
-	</script>
-	<script>
-	function add_li(list, text) {
-		var list = document.getElementById(list);
-		var li = document.createElement("li");
-		li.innerHTML = text;
-		list.appendChild(li);
-	}
-
-	function load_list(list, list_array) {
-		for (var i = 0; i < list_array.length; i++) {
-		add_li (list, list_array[i]);
-		}
-	} 
-
-	function getSearchResults(){
-		var searchterm = document.getElementById('target').value;
-		if (searchterm == "") {
-			document.getElementById("resultlist").innerHTML="Type a search term";
-		} else {
-			var url='http://localhost:8080/api/search/'+searchterm;
-			function callbackfunction(){
-				document.getElementById("resultlist").innerHTML="";
-				obj = JSON.parse(xmlhttp.responseText);
-				load_list("resultlist",obj.albums);
-				if (document.getElementById("resultlist").innerHTML=="") {
-					document.getElementById("resultlist").innerHTML="No Results!";
-				}
-			}
-			ajaxRequest(url, callbackfunction);
-		}
-	}
-	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="static/css/font-awesome.css">
 </head>
 <body>
-	<input id="target" type="text" placeholder="Search Text goes here" onkeyup="getSearchResults()"><br>
-	<div id="results">
-	<ul id="resultlist">
-		Type a search term
-	</ul>	
+	<div class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<a href="" class="brand"><i class="icon-music"></i> PiTunes</a>
+					<ul class="nav">
+						<li class="divider-vertical"></li>
+						<li><a id="uploadbtn" href="#uploadModal" data-toggle="modal"><i class="icon-upload-alt"></i>Upload</a></li>
+						<li class="divider-vertical"><li>
+					</ul>
+					<p class="navbar-text pull-left">Now playing: <strong><span onclick="getNowPlaying();" id="nowplaying"></span></strong></p>
+					<form class="navbar-form pull-right">
+							<div class="btn-group">
+								<button class="btn" id="shufflebtn" type="button" title="Shuffle"><i class="icon-random"></i></button>
+								<button class="btn" id="repeatbtn" type="button" title="Repeat"><i class="icon-repeat"></i></button>
+							</div>
+							<div class="btn-group">
+								<button class="btn" id="prevbtn" type="button" onclick="prevsong();"><i class="icon-step-backward"></i></button>
+								<button class="btn btn-primary" id="playpausebtn" type="button" onclick="playPause();"><i class="icon-play"></i></button>
+								<button class="btn" id="nextbtn" type="button" onclick="nextsong();"><i class="icon-step-forward"></i></button>
+							</div>
+						
+						<input id="target" class="search-query" type="text" placeholder="Search Text goes here" onkeyup="getSearchResults()">
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="row" id="controls">
+			<div class="span12">
+			<!-- <div class="btn-group pull-left">
+				<button class="btn btn-inverse btn-large" id="prevbtn" type="button" onclick="prevsong();"><i class="icon-step-backward"></i></button>
+				<button class="btn btn-primary btn-large" id="playpausebtn" type="button" onclick="playPause();"><i class="icon-play"></i></button>
+				<button class="btn btn-inverse btn-large" id="nextbtn" type="button" onclick="nextsong();"><i class="icon-step-forward"></i></button>
+			</div> -->
+			<p class="pull-left">3:23<p>
+			<div class="progress span9"><div id="timebar" class="bar" style="width: 60%;"></div></div>
+			<p class="pull-left">-1:03</p>
+<!-- 			<div class="btn-group pull-left">
+				<button class="btn" id="shufflebtn" type="button" title="Shuffle"><i class="icon-random"></i></button>
+				<button class="btn" id="repeatbtn" type="button" title="Repeat"><i class="icon-repeat"></i></button>
+			</div> -->
+		</div>
+    	</div>
+		<div id="results">
+			<ul id="resultlist">
+				Type a search term
+			</ul>	
+		</div>
+
+    	<div id="uploadModal" class="modal hide fade">
+    		<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    			<h3>Upload songs</h3>
+    		</div>
+    		<div id="uploadbox" class="modal-body">
+    			<form>
+    				<p>To upload a song or album, just drag and drop them onto this window, or browse for them on your computer</p>
+    				<input type="file" name="songupload">
+    				<span class="btn btn-file">Upload<input type="file" /></span>
+    			</form>
+    		</div>
+    		<div class="modal-footer">
+    			<a href="#" class="btn">Close</a>
+    			<a href="#" class="btn btn-primary">Save changes</a>
+    		</div>
+    	</div>
 	</div>
+
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/functions.js"></script>
 </body>
 </html>

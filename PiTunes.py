@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """
+PiTunes
+=======
 
+A headless social media player for the RaspberryPi. It provides a web control interface and web-based api for mpd (the backend that plays the music).
 """
 
 from __future__ import division
@@ -9,7 +12,7 @@ import time
 import tornado.ioloop
 import tornado.web
 import json
-import urllib
+import urllib2 as urllib
 import os
 import tornado.template
 import settings
@@ -18,29 +21,50 @@ import settings
 client = mpd.MPDClient()
 client.timeout = 10
 client.ideltimeout = None
-client.connect("localhost",6600)
+client.connect(settings.HOSTNAME,settings.MPD_PORT)
 
-def fadeout(timer=0.3):
-	if timer != 0 or timer != 0.0:
+def fadeout(timeout=0.3):
+	"""Fades out the music, then pauses it. Much nicer sounding than an abrupt stop...
+
+	Parameters
+	----------
+	timeout: digit
+		Length (in seconds) of fadeout. Defaults to 0.3. If this is set too long, you may be able to hear the individual changes in volume."""
+	if timeout != 0 or timeout != 0.0:
 		startvol = int(client.status()['volume'])
 		for i in xrange(startvol-1):
 			client.setvol(startvol-i)
-			time.sleep(timer/startvol)
+			time.sleep(timeout/startvol)
 		client.pause()
 		client.setvol(startvol)
 	else:
 		client.pause()
-def fadein(timer=0.4):
-	if timer != 0 or timer != 0.0:
+def fadein(timeout=0.4):
+	"""Fades in the music, restoring it to volume that it was at when it was paused.
+
+	Parameters
+	----------
+	timeout: digit
+		Length (in seconds) of fadeout. Defaults to 0.3. If this is set too long, you may be able to hear the individual changes in volume."""
+	if timeout != 0 or timeout != 0.0:
 		endvol = int(client.status()['volume'])
 		client.play()
 		for i in xrange(endvol):
 			client.setvol(i)
-			time.sleep(timer/endvol)
+			time.sleep(timeout/endvol)
 	else:
 		client.play()
 
 def search(term,tag="any"):
+	"""Performs a serch of the database of the given search term for the given tag
+
+	Parameters
+	----------
+	term: string
+		The search term (url encoded) to search the database for
+
+	tag: string
+		The tag to search. Valid tags: any, artist, album, title, track, name, genre, date, performer, disc"""
 	searchterm = urllib.unquote(term)
 	results = client.search(tag,searchterm)
 	print "Searching", tag, "for:", searchterm
@@ -126,6 +150,12 @@ class MainHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.write(self.loader.load("index.html").generate())
 
+
+tornadosettings = {
+    "static_path": os.path.join(os.path.dirname(__file__), "static"),
+}
+
+# Setting up what requests go to which handlers...
 application = tornado.web.Application(
 [
 	(r"/api/now_playing",now_playing),
@@ -139,7 +169,7 @@ application = tornado.web.Application(
 	(r"/api/search/(.*)(/[a-z]{1,6})?", searchhandler),
 #	(r"/api/seek/([0-9]{1,3})",seekhandler),
 	(r"/(.*)", MainHandler)
-])
+], **tornadosettings)
 
 if __name__=="__main__":
 	print "Starting web service on port %i..." % (settings.PORT)
