@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	getstatus();
-	$('#shufflebtn').tooltip({placement:"bottom"})
-	$('#repeatbtn').tooltip({placement:"bottom"})
+	//$('#shufflebtn').tooltip({placement:"bottom"})
+	//$('#repeatbtn').tooltip({placement:"bottom"})
 	$('#uploadbtn').tooltip({title: "Upload songs to your RaspberryPi and add them to the library", placement:"bottom"})
 })
 
@@ -38,7 +38,7 @@ function load_list(list, list_array) {
 } 
 
 function getSearchResults(){
-	var searchterm = document.getElementById('target').value;
+	var searchterm = encodeURIComponent(document.getElementById('target').value);
 	if (searchterm == "") {
 		document.getElementById("resultlist").innerHTML="Type a search term";
 	} else {
@@ -100,7 +100,6 @@ function nextsong() {
 function prevsong() {
 	ajaxRequest("api/previous",getstatus);
 }
-
 
 var Player = {
 	currstatus: {

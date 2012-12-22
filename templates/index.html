@@ -4,6 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="static/css/font-awesome.css">
+    <link rel="stylesheet" href="static/css/style.css"
 </head>
 <body>
 	<div class="container">
@@ -18,17 +19,16 @@
 					</ul>
 					<p class="navbar-text pull-left">Now playing: <strong><span onclick="getNowPlaying();" id="nowplaying"></span></strong></p>
 					<form class="navbar-form pull-right">
-							<div class="btn-group">
+							<div class="btn-group" data-toggle="buttons-checkbox">
 								<button class="btn" id="shufflebtn" type="button" title="Shuffle"><i class="icon-random"></i></button>
-								<button class="btn" id="repeatbtn" type="button" title="Repeat"><i class="icon-repeat"></i></button>
+								<button class="btn active" id="repeatbtn" type="button" title="Repeat"><i class="icon-repeat"></i></button>
 							</div>
 							<div class="btn-group">
 								<button class="btn" id="prevbtn" type="button" onclick="prevsong();"><i class="icon-step-backward"></i></button>
 								<button class="btn btn-primary" id="playpausebtn" type="button" onclick="playPause();"><i class="icon-play"></i></button>
 								<button class="btn" id="nextbtn" type="button" onclick="nextsong();"><i class="icon-step-forward"></i></button>
 							</div>
-						
-						<input id="target" class="search-query" type="text" placeholder="Search Text goes here" onkeyup="getSearchResults()">
+						<input id="target" class="search-query" type="text" placeholder="Search" onkeyup="getSearchResults()">
 					</form>
 				</div>
 			</div>
@@ -73,9 +73,15 @@
     		</div>
     	</div>
 	</div>
+	<footer class="footer">
+		<div id="container">
+			<p>PiTunes by <a href="http://richardbrunt.co.uk/">Richard Brunt</a></p>
+			<p><a href="https://github.com/rbrunt/PiTunes"><i class="icon-github"></i></a></p>
+		</div>
+	<footer>
 
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="static/js/bootstrap.min.js"></script>
-	<script src="static/functions.js"></script>
+	<script src="static/js/functions.js"></script>
 </body>
 </html>

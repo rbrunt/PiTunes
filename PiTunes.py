@@ -18,11 +18,6 @@ import tornado.template
 import settings
 #from mutagen import File
 
-client = mpd.MPDClient()
-client.timeout = 10
-client.ideltimeout = None
-client.connect(settings.HOSTNAME,settings.MPD_PORT)
-
 def fadeout(timeout=0.3):
 	"""Fades out the music, then pauses it. Much nicer sounding than an abrupt stop...
 
@@ -32,13 +27,15 @@ def fadeout(timeout=0.3):
 		Length (in seconds) of fadeout. Defaults to 0.3. If this is set too long, you may be able to hear the individual changes in volume."""
 	if timeout != 0 or timeout != 0.0:
 		startvol = int(client.status()['volume'])
-		for i in xrange(startvol-1):
+		for i in xrange(startvol+1):
 			client.setvol(startvol-i)
+			if settings.DEBUG: print "setting volume to", startvol-i
 			time.sleep(timeout/startvol)
 		client.pause()
 		client.setvol(startvol)
 	else:
 		client.pause()
+	if settings.DEBUG: print "paused"
 def fadein(timeout=0.4):
 	"""Fades in the music, restoring it to volume that it was at when it was paused.
 
@@ -49,11 +46,13 @@ def fadein(timeout=0.4):
 	if timeout != 0 or timeout != 0.0:
 		endvol = int(client.status()['volume'])
 		client.play()
-		for i in xrange(endvol):
+		for i in xrange(endvol+1):
 			client.setvol(i)
+			if settings.DEBUG: print "setting volume to", i
 			time.sleep(timeout/endvol)
 	else:
 		client.play()
+	if settings.DEBUG: print "playing"
 
 def search(term,tag="any"):
 	"""Performs a serch of the database of the given search term for the given tag
@@ -172,6 +171,12 @@ application = tornado.web.Application(
 ], **tornadosettings)
 
 if __name__=="__main__":
+	print "Connecting to MPD..."
+	client = mpd.MPDClient()
+	client.timeout = 10
+	client.idletimeout = None
+	client.connect(settings.HOSTNAME,settings.MPD_PORT)
+
 	print "Starting web service on port %i..." % (settings.PORT)
 	application.listen(settings.PORT)
 	print "Server Started. Starting tornado ioloop..."
