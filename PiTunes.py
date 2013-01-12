@@ -25,7 +25,7 @@ def fadeout(timeout=0.3):
 	----------
 	timeout: digit
 		Length (in seconds) of fadeout. Defaults to 0.3. If this is set too long, you may be able to hear the individual changes in volume."""
-	if timeout != 0 or timeout != 0.0 and settings.FADE_ON_PLAY_PAUSE == True:
+	if (timeout != 0 or timeout != 0.0) and settings.FADE_ON_PLAY_PAUSE == True:
 		startvol = int(client.status()['volume'])
 		for i in xrange(startvol+1):
 			client.setvol(startvol-i)
@@ -43,7 +43,7 @@ def fadein(timeout=0.4):
 	----------
 	timeout: digit
 		Length (in seconds) of fadeout. Defaults to 0.3. If this is set too long, you may be able to hear the individual changes in volume."""
-	if timeout != 0 or timeout != 0.0 and settings.FADE_ON_PLAY_PAUSE == True:
+	if (timeout != 0 or timeout != 0.0) and settings.FADE_ON_PLAY_PAUSE == True:
 		endvol = int(client.status()['volume'])
 		client.play()
 		for i in xrange(endvol+1):
