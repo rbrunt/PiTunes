@@ -97,10 +97,6 @@ class now_playing(tornado.web.RequestHandler):
 		response = json.dumps({"song":{"title":current['title'],"artist":current['artist'],"album":current['album']}})
 		self.write(response)
 		
-class MainHandler(tornado.web.RequestHandler):
-	def get(self):
-		self.write("Hello, World")
-
 class get_volume(tornado.web.RequestHandler):
 	def get(self):
 		response = json.dumps({"player":{"volume":client.status()['volume']}})
@@ -150,8 +146,8 @@ class uploadHandler(tornado.web.RequestHandler):
 		for aFile in files:
 			output_file = open("uploadedfiles/" + aFile["filename"], 'w')
 			output_file.write(aFile['body'])
-    	response = "{success:\"true\"}"
-        self.write(response)
+	    	response = "{success:\"true\"}"
+	        self.write(response)
 
 
 
