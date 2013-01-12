@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="static/fineuploader/client/fineuploader.css">
 	<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="static/css/font-awesome.css">
-    <link rel="stylesheet" href="static/css/style.css"
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+	    /* Fine Uploader
+		-------------------------------------------------- */
+		.qq-upload-list {
+			text-align: left;
+		}
+	 
+		/* For the bootstrapped demos */
+		li.alert-success {
+			background-color: #DFF0D8;
+		}
+	 
+		li.alert-error {
+			background-color: #F2DEDE;
+		}
+	 
+		.alert-error .qq-upload-failed-text {
+			display: inline;
+		}
+    </style>
 </head>
 <body>
 	<div class="container">
@@ -60,13 +81,14 @@
     			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     			<h3>Upload songs</h3>
     		</div>
-    		<div id="uploadbox" class="modal-body">
+<!--     		<div id="uploadbox" class="modal-body">
     			<form>
     				<p>To upload a song or album, just drag and drop them onto this window, or browse for them on your computer</p>
     				<input type="file" name="songupload">
     				<span class="btn btn-file">Upload<input type="file" /></span>
     			</form>
-    		</div>
+    		</div> -->
+    		<div id="bootstrapped-fine-uploader"></div>
     		<div class="modal-footer">
     			<a href="#" class="btn">Close</a>
     			<a href="#" class="btn btn-primary">Save changes</a>
@@ -83,5 +105,33 @@
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="static/js/bootstrap.min.js"></script>
 	<script src="static/js/functions.js"></script>
+	<script src="static/fineuploader/client/fineuploader.js"></script>
+	<script>
+		function createUploader() {
+			var uploader = new qq.FineUploader({
+				element: document.getElementById('bootstrapped-fine-uploader'),
+				allowedExtensions: ["mp3","ogg","flac","m4a"],
+				forceMultipart: true,
+				request: {
+					endpoint: 'server/handleUploads'
+				},
+				text: {
+					uploadButton: '<i class="icon-upload icon-white"></i> Test me now and upload a file'
+				},
+				template: '<div class="qq-uploader span12">' +
+						'<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +
+						'<div class="qq-upload-button btn btn-success" style="width: auto;">{uploadButtonText}</div>' +
+						'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
+						'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
+						'</div>',
+				classes: {
+					success: 'alert alert-success',
+					fail: 'alert alert-error'
+				},
+				debug: true
+			});
+		}
+		window.onload = createUploader;
+	</script>
 </body>
 </html>

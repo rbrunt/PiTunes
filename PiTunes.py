@@ -141,6 +141,20 @@ class playpause(tornado.web.RequestHandler):
 		elif status == "play":
 			fadeout()
 
+class uploadHandler(tornado.web.RequestHandler):
+	def get(self):
+		self.redirect("/")
+
+	def push(self):
+		files = self.request.files
+		for aFile in files:
+			output_file = open("uploadedfiles/" + aFile["filename"], 'w')
+        	output_file.write(aFile['body'])
+        response = "{success:\"true\"}"
+        self.write(response)
+
+
+
 class MainHandler(tornado.web.RequestHandler):
 
 	def initialize(self):
@@ -167,6 +181,7 @@ application = tornado.web.Application(
 	(r"/api/previous", prevhandler),
 	(r"/api/search/(.*)(/[a-z]{1,6})?", searchhandler),
 #	(r"/api/seek/([0-9]{1,3})",seekhandler),
+	(r"/upload", uploadHandler),
 	(r"/(.*)", MainHandler)
 ], **tornadosettings)
 
