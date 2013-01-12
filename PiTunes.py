@@ -149,8 +149,8 @@ class uploadHandler(tornado.web.RequestHandler):
 		files = self.request.files
 		for aFile in files:
 			output_file = open("uploadedfiles/" + aFile["filename"], 'w')
-        	output_file.write(aFile['body'])
-        response = "{success:\"true\"}"
+			output_file.write(aFile['body'])
+    	response = "{success:\"true\"}"
         self.write(response)
 
 
