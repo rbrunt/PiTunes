@@ -15,8 +15,8 @@ import json
 import urllib2 as urllib
 import os
 import tornado.template
-import settings
-#from mutagen import File
+import uuid
+import settings # Local settings file
 
 def fadeout(timeout=0.3):
 	"""Fades out the music, then pauses it. Much nicer sounding than an abrupt stop...
@@ -142,14 +142,25 @@ class uploadHandler(tornado.web.RequestHandler):
 		self.redirect("/")
 
 	def post(self):
-		print "Receiving Upload..."
+		response = {} # initalise the response dict (turned into JSON later)
+		
+		if settings.DEBUG: print "Receiving Upload..."
 		fileinfo1 = self.request.files["songupload"][0]
-		for k,v in fileinfo1.iteritems():
-			print k
-#		print "Looping through files"
-		output_file = open("uploadedfiles/" + fileinfo1["filename"], 'w')
-		output_file.write(fileinfo1['body'])
-		output_file.close()
+		filename = fileinfo1["filename"]
+#		extension = filename.split()[-1]
+#		if extension not in settings.ALLOWED_EXTENSIONS:
+#			validextension = False
+#			response["error"] = "The file you uploaded wasn't one of the accepted music files. they must have one of these extensions: ", settings.ALLOWED_EXTENSIONS
+#		else:
+#			validextension = True
+		if settings.DEBUG: print "Someone uploaded %s" % (filename)
+		try:
+			output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4(), 'w') # Add a random uuid to end of filename to stop there being duplicates.
+			output_file.write(fileinfo1['body'])
+			output_file.close()
+		except:
+			if settings.DEBUG: print "there was a problem saving the file %s" % fileinfo1["filename"]
+			response = "{\"error\":\"There was an error saving the file to disk\"}"
 #		fileinfo = self.request.files[
 		#file1 = self.request.files
 #		print file1
@@ -163,8 +174,11 @@ class uploadHandler(tornado.web.RequestHandler):
 #	        self.finish("file" + final_filename + " is uploaded")
 
 
-#	    	response = "{\"success\":true}"
-#	        self.write(response)
+	    	if response["error"]:
+	    		response["success"] = True
+	    	else:
+	    		resonse["success"] = False
+	        self.write(json.JSONEncoder().encode(response))
 
 
 
