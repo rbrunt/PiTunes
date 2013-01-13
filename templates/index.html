@@ -81,17 +81,17 @@
     			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     			<h3>Upload songs</h3>
     		</div>
-<!--     		<div id="uploadbox" class="modal-body">
-    			<form>
+     		<div id="uploadbox" class="modal-body">
+    			<form enctype="multipart/form-data" action="/upload" method="post">
     				<p>To upload a song or album, just drag and drop them onto this window, or browse for them on your computer</p>
     				<input type="file" name="songupload">
-    				<span class="btn btn-file">Upload<input type="file" /></span>
+				<input type="submit" value="upload">
+    				<span class="btn btn-file">Upload<input type="file" /></span> 
     			</form>
-    		</div> -->
+    		</div>
     		<div id="bootstrapped-fine-uploader"></div>
     		<div class="modal-footer">
-    			<a href="#" class="btn">Close</a>
-    			<a href="#" class="btn btn-primary">Save changes</a>
+    			<a href="#" class="btn btn-active">Close</a>
     		</div>
     	</div>
 	</div>
@@ -111,15 +111,15 @@
 			var uploader = new qq.FineUploader({
 				element: document.getElementById('bootstrapped-fine-uploader'),
 				allowedExtensions: ["mp3","ogg","flac","m4a"],
-				forceMultipart: true,
+				forceMulitpart: true,
 				request: {
-					endpoint: 'server/handleUploads'
+					endpoint: '/upload'
 				},
 				text: {
-					uploadButton: '<i class="icon-upload icon-white"></i> Test me now and upload a file'
+					uploadButton: '<i class="icon-upload icon-white"></i> Click here to browse, or drag and drop a file to upload'
 				},
-				template: '<div class="qq-uploader span12">' +
-						'<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +
+				template: '<div class="qq-uploader">' +
+						'<pre class="qq-upload-drop-area span6"><span>{dragZoneText}</span></pre>' +
 						'<div class="qq-upload-button btn btn-success" style="width: auto;">{uploadButtonText}</div>' +
 						'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
 						'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +

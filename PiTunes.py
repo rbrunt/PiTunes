@@ -141,13 +141,30 @@ class uploadHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.redirect("/")
 
-	def push(self):
-		files = self.request.files
-		for aFile in files:
-			output_file = open("uploadedfiles/" + aFile["filename"], 'w')
-			output_file.write(aFile['body'])
-	    	response = "{success:\"true\"}"
-	        self.write(response)
+	def post(self):
+		print "Receiving Upload..."
+		fileinfo1 = self.request.files["songupload"][0]
+		for k,v in fileinfo1.iteritems():
+			print k
+#		print "Looping through files"
+		output_file = open("uploadedfiles/" + fileinfo1["filename"], 'w')
+		output_file.write(fileinfo1['body'])
+		output_file.close()
+#		fileinfo = self.request.files[
+		#file1 = self.request.files
+#		print file1
+#		file1 = self.request.files['file1'][0]
+#	        original_fname = file1['filename']
+#	        extension = os.path.splitext(original_fname)[1]
+#	        fname = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(6))
+#	        final_filename= fname+extension
+#	        output_file = open("uploadedfiles/" + final_filename, 'w')
+#	        output_file.write(file1['body'])
+#	        self.finish("file" + final_filename + " is uploaded")
+
+
+#	    	response = "{\"success\":true}"
+#	        self.write(response)
 
 
 
