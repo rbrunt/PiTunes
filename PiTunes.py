@@ -174,7 +174,7 @@ class uploadHandler(tornado.web.RequestHandler):
 #	        self.finish("file" + final_filename + " is uploaded")
 
 
-	    	if response["error"]:
+	    	if "error" in response.keys():
 	    		response["success"] = True
 	    	else:
 	    		resonse["success"] = False
