@@ -19,4 +19,5 @@ DEBUG = True # Print debug messages to terminal?
 ####################
 #ALLOWED_EXTENSIONS  = ["mp3","ogg","m4a","flac"] # What extensions are people allowed to upload?
 UPLOAD_PATH = "uploadedfiles/"
+#UPlOAD_PATH = "/var/lib/mpd/music/"
 FADE_ON_PLAY_PAUSE = False # Do you want to fade the music when pausing / resuming? Works better on computers than the RPi...
