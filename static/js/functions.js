@@ -103,16 +103,18 @@ function doupdate(status){
 	} else {
 		$("#elapsedtime").html(minutes+":"+seconds);
 	}
-	var timeremaining = Player.nowplaying.length - elapsedTime;
-	var hoursremaining = Math.floor(timeremaining / 3600);
-	timeremaining = timeremaining - hours * 3600;
-	var minutesremaining = Math.floor(timeremaining / 60);
-	var secondsremaining = Math.floor(timeremaining - minutes * 60);
-	console.log("Elapsed Time: "+hoursremaining+":"+minutesremaining+":"+secondsremaining);
-	if (hours=!0){
-		$("#timeremaining").html("-"+hoursremaining+":"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
+
+	var timeDifference = Player.nowplaying.length - elapsedTime;
+
+	var hoursRemaining = Math.floor(timeDifference / 3600);
+	var timeRemaining = timeDifference - hoursRemaining * 3600;
+	var minutesRemaining = Math.floor(timeRemaining / 60);
+	var secondsRemaining = Math.floor(timeRemaining - minutesRemaining * 60);
+	console.log("Elapsed Time: "+hoursRemaining+":"+minutesRemaining+":"+secondsRemaining);
+	if (hours!=0){
+		$("#timeremaining").html("-"+hoursRemaining+":"+minutesRemaining+":"+secondsRemaining+"("+Player.nowplaying.length+")");
 	} else {
-		$("#timeremaining").html("-"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
+		$("#timeremaining").html("-"+minutesRemaining+":"+secondsRemaining+"("+Player.nowplaying.length+")");
 	}
 
 }
