@@ -50,11 +50,13 @@
 			<div class="navbar-inner">
 				<div class="container">
 					<a href="" class="brand"><i class="icon-music"></i> PiTunes</a>
+					{% if settings.ALLOW_UPLOADS %}
 					<ul class="nav">
 						<li class="divider-vertical"></li>
 						<li><a id="uploadbtn" href="#uploadModal" data-toggle="modal"><i class="icon-upload-alt"></i>Upload</a></li>
 						<li class="divider-vertical"><li>
 					</ul>
+					{% end %}
 					<p class="navbar-text pull-left">Now playing: <strong><span onclick="getNowPlaying();" id="nowplaying"></span></strong></p>
 					<form class="navbar-form pull-right">
 							<div class="btn-group" data-toggle="buttons-checkbox">
