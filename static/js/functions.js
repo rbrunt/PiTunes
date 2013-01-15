@@ -165,7 +165,10 @@ var Player = {
 		volume: "0",
 		random: "0",
 		repeat: "0",
-		position: "0"
+		position: {
+			time: 0.0,
+			percentage: 0,
+		}
 	} ,
 	nowplaying: {
 		title: "",
