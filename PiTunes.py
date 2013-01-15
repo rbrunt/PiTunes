@@ -198,8 +198,8 @@ class uploadHandler(tornado.web.RequestHandler):
 		    	else:
 		    		resonse["success"] = False
 		        self.write(json.JSONEncoder().encode(response))
-		    else:
-		    	self.write("Uploads have been disabled. Click <a href=\"/\">here</a> to go back home");
+		else:
+		   	self.write("Uploads have been disabled. Click <a href=\"/\">here</a> to go back home");
 
 
 
