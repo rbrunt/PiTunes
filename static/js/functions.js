@@ -110,9 +110,9 @@ function doupdate(status){
 	var secondsremaining = Math.floor(timeremaining - minutes * 60);
 	console.log("Elapsed Time: "+hoursremaining+":"+minutesremaining+":"+secondsremaining);
 	if (hours=!0){
-		$("#elapsedtime").html("-"+hoursremaining+":"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
+		$("#timeremaining").html("-"+hoursremaining+":"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
 	} else {
-		$("#elapsedtime").html("-"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
+		$("#timeremaining").html("-"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
 	}
 
 }
