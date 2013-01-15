@@ -90,6 +90,17 @@ function doupdate(status){
 	} else {
 		$("#playpausebtn i").attr("class","icon-play");
 	}
+	var elapsedTime = parseFloat(status.elapsed);
+	var hours = Math.floor(time / 3600);
+	time = elapsedTime - hours * 3600;
+	var minutes = Math.floor(time / 60);
+	var seconds = Math.floor(time - minutes * 60);
+	if (hours=!0){
+		$("#elapsedtime").html(hours+":"+minutes+""+seconds);
+	} else {
+		$("#elapsedtime").html(minutes+""+seconds);
+	}
+
 }
 
 function getstatus(){
