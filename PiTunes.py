@@ -173,7 +173,7 @@ class uploadHandler(tornado.web.RequestHandler):
 	#			validextension = True
 			if settings.DEBUG: print "Someone uploaded %s" % (filename)
 			try:
-					output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4() + extension, 'w') # Add a random uuid to end of filename to stop there being duplicates.
+				output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4() + extension, 'w') # Add a random uuid to end of filename to stop there being duplicates.
 				output_file = open(settings.UPLOAD_PATH + filename, 'w')
 				output_file.write(fileinfo1['body'])
 				output_file.close()
