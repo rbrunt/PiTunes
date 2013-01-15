@@ -91,10 +91,12 @@ function doupdate(status){
 		$("#playpausebtn i").attr("class","icon-play");
 	}
 	var elapsedTime = parseFloat(status.elapsed);
-	var hours = Math.floor(time / 3600);
-	time = elapsedTime - hours * 3600;
+//	console.log(elapsedTime);
+	var hours = Math.floor(elapsedTime / 3600);
+	var time = elapsedTime - hours * 3600;
 	var minutes = Math.floor(time / 60);
 	var seconds = Math.floor(time - minutes * 60);
+	console.log("Elapsed Time: "+hours+":"+minutes+":"+seconds);
 	if (hours=!0){
 		$("#elapsedtime").html(hours+":"+minutes+""+seconds);
 	} else {
