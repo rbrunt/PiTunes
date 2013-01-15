@@ -85,38 +85,42 @@ function playPause(){
 	ajaxRequest("api/playpause",getstatus);
 }
 
+
+function convertTime(time){
+	var hours = Math.floor(time / 3600);
+	time = time - hours * 3600;
+	var minutes = Math.floor(time / 60);
+	var seconds = Math.floor(time - minutes * 60);
+	var returnString
+
+	// Pad the output so minutes and seconds are always 2 digits:
+	if (minutes < 10){
+		minutes = "0"+minutes.toString();
+	} else{
+		minutes = minutes.toString();
+	}
+	if (seconds < 10){
+		seconds = "0"+seconds.toString();
+	} else{
+		seconds = seconds.toString();
+	}
+	
+	if (hours!=0){
+		returnString =  hours+":"+minutes+":"+seconds;
+	} else {
+		returnString =  minutes+":"+seconds;
+	}
+	return returnString;
+}
+
 function doupdate(status){
 	if (status.state=="play"){
 		$("#playpausebtn i").attr("class","icon-pause");
 	} else {
 		$("#playpausebtn i").attr("class","icon-play");
 	}
-	var elapsedTime = parseFloat(status.elapsed);
-//	console.log(elapsedTime);
-	var hours = Math.floor(elapsedTime / 3600);
-	var time = elapsedTime - hours * 3600;
-	var minutes = Math.floor(time / 60);
-	var seconds = Math.floor(time - minutes * 60);
-	console.log("Elapsed Time: "+hours+":"+minutes+":"+seconds);
-	if (hours!=0){
-		$("#elapsedtime").html(hours+":"+minutes+":"+seconds);
-	} else {
-		$("#elapsedtime").html(minutes+":"+seconds);
-	}
-
-	var timeDifference = Player.nowplaying.length - elapsedTime;
-
-	var hoursRemaining = Math.floor(timeDifference / 3600);
-	var timeRemaining = timeDifference - hoursRemaining * 3600;
-	var minutesRemaining = Math.floor(timeRemaining / 60);
-	var secondsRemaining = Math.floor(timeRemaining - minutesRemaining * 60);
-	console.log("Elapsed Time: "+hoursRemaining+":"+minutesRemaining+":"+secondsRemaining);
-	if (hours!=0){
-		$("#timeremaining").html("-"+hoursRemaining+":"+minutesRemaining+":"+secondsRemaining+"("+Player.nowplaying.length+")");
-	} else {
-		$("#timeremaining").html("-"+minutesRemaining+":"+secondsRemaining+"("+Player.nowplaying.length+")");
-	}
-
+	$("#elapsedtime").html(convertTime(parseFloat(status.elapsed)));
+	$("#timeremaining").html("-"+convertTime(Player.nowplaying.length - elapsedTime));
 }
 
 function getstatus(){
