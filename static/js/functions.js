@@ -119,7 +119,8 @@ function doupdate(status){
 	} else {
 		$("#playpausebtn i").attr("class","icon-play");
 	}
-	$("#elapsedtime").html(convertTime(parseFloat(status.elapsed)));
+	elapsedTime = parseFloat(status.elapsed);
+	$("#elapsedtime").html(convertTime(elapsedTime)+" / "+convertTime(Player.nowplaying.length));
 	$("#timeremaining").html("-"+convertTime(Player.nowplaying.length - elapsedTime));
 }
 
