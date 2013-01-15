@@ -5,6 +5,13 @@ A Headless social music player for the Raspberry Pi based on the mpd music playe
 
 Since it uses mpd as the backend, it supports some more advanced and less common features, including: broad format support, gapless playback, replaygain support, and more!
 
+
+License
+-------
+
+PiTunes is released under the terms of the GNU General Puplic License v3. For more information, see the `COPYING` file, or go to [GNU.org][GNU website]
+
+
 Requirements
 ------------
 
@@ -30,3 +37,4 @@ For full setup instructions, read the [guide][project wiki] in the wiki.
 [tornado website]: http://www.tornadoweb.org/
 [tornado github]: https://github.com/facebook/tornado
 [pympd github]: https://github.com/Mic92/python-mpd2
+[GNU website]: http://www.gnu.org/licenses/gpl.html

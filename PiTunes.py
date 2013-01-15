@@ -1,4 +1,21 @@
 #!/usr/bin/env python
+
+#########################################################################
+#	This file is part of PiTunes.
+#	
+#	PiTunes is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	(at your option) any later version.
+#
+#	PiTunes is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+#
+#	You should have received a copy of the GNU General Public License
+#	along with PiTunes.  If not, see <http://www.gnu.org/licenses/>.
+#########################################################################
 """
 PiTunes
 =======
@@ -155,7 +172,8 @@ class uploadHandler(tornado.web.RequestHandler):
 #			validextension = True
 		if settings.DEBUG: print "Someone uploaded %s" % (filename)
 		try:
-			output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4(), 'w') # Add a random uuid to end of filename to stop there being duplicates.
+				output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4() + extension, 'w') # Add a random uuid to end of filename to stop there being duplicates.
+			output_file = open(settings.UPLOAD_PATH + filename, 'w')
 			output_file.write(fileinfo1['body'])
 			output_file.close()
 		except:
