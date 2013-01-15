@@ -115,7 +115,8 @@ class now_playing(tornado.web.RequestHandler):
 	def get(self):
 		try:
 			current = client.currentsong()
-		except ConnectionError:
+		except:
+			if settings.DEBUG: print "Connection to MPD lost, trying to reconnect..."
 			connectToClient()
 			current = client.currentsong()
 		response = json.dumps({"song":{"title":current['title'],"artist":current['artist'],"album":current['album']}})
