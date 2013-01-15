@@ -97,10 +97,10 @@ function doupdate(status){
 	var minutes = Math.floor(time / 60);
 	var seconds = Math.floor(time - minutes * 60);
 	console.log("Elapsed Time: "+hours+":"+minutes+":"+seconds);
-	if (hours=!0){
-		$("#elapsedtime").html(hours+":"+minutes+""+seconds);
+	if (hours!=0){
+		$("#elapsedtime").html(hours+":"+minutes+":"+seconds);
 	} else {
-		$("#elapsedtime").html(minutes+""+seconds);
+		$("#elapsedtime").html(minutes+":"+seconds);
 	}
 
 }
