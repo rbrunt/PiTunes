@@ -160,43 +160,44 @@ class uploadHandler(tornado.web.RequestHandler):
 
 	def post(self):
 		if settings.ALLOW_UPLOADS:
-			response = {} # initalise the response dict (turned into JSON later)
+			response = {"success":False} # initalise the response dict (turned into JSON later)
 			
 			if settings.DEBUG: print "Receiving Upload..."
-			fileinfo1 = self.request.files["songupload"][0]
-			filename = fileinfo1["filename"]
-	#		extension = filename.split()[-1]
-	#		if extension not in settings.ALLOWED_EXTENSIONS:
-	#			validextension = False
-	#			response["error"] = "The file you uploaded wasn't one of the accepted music files. they must have one of these extensions: ", settings.ALLOWED_EXTENSIONS
-	#		else:
-	#			validextension = True
-			if settings.DEBUG: print "Someone uploaded %s" % (filename)
-			try:
-				output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4() + extension, 'w') # Add a random uuid to end of filename to stop there being duplicates.
-				output_file = open(settings.UPLOAD_PATH + filename, 'w')
-				output_file.write(fileinfo1['body'])
-				output_file.close()
-			except:
-				if settings.DEBUG: print "there was a problem saving the file %s" % fileinfo1["filename"]
-				response = "{\"error\":\"There was an error saving the file to disk\"}"
-	#		fileinfo = self.request.files[
-			#file1 = self.request.files
-	#		print file1
-	#		file1 = self.request.files['file1'][0]
-	#	        original_fname = file1['filename']
-	#	        extension = os.path.splitext(original_fname)[1]
-	#	        fname = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(6))
-	#	        final_filename= fname+extension
-	#	        output_file = open("uploadedfiles/" + final_filename, 'w')
-	#	        output_file.write(file1['body'])
-	#	        self.finish("file" + final_filename + " is uploaded")
+			fileinfo = self.request.files["songupload"]
+			for fileinfo1 in fileinfo:
+				filename = fileinfo1["filename"]
+		#		extension = filename.split()[-1]
+		#		if extension not in settings.ALLOWED_EXTENSIONS:
+		#			validextension = False
+		#			response["error"] = "The file you uploaded wasn't one of the accepted music files. they must have one of these extensions: ", settings.ALLOWED_EXTENSIONS
+		#		else:
+		#			validextension = True
+				if settings.DEBUG: print "Someone uploaded %s" % (filename)
+				try:
+					#output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4() + extension, 'w') # Add a random uuid to end of filename to stop there being duplicates.
+					output_file = open(settings.UPLOAD_PATH + filename, 'w')
+					output_file.write(fileinfo1['body'])
+					output_file.close()
+				except:
+					if settings.DEBUG: print "there was a problem saving the file %s" % fileinfo1["filename"]
+					response["error"] = "There was an error saving the file to disk"
+		#		fileinfo = self.request.files[
+				#file1 = self.request.files
+		#		print file1
+		#		file1 = self.request.files['file1'][0]
+		#	        original_fname = file1['filename']
+		#	        extension = os.path.splitext(original_fname)[1]
+		#	        fname = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(6))
+		#	        final_filename= fname+extension
+		#	        output_file = open("uploadedfiles/" + final_filename, 'w')
+		#	        output_file.write(file1['body'])
+		#	        self.finish("file" + final_filename + " is uploaded")
 
 
-		    	if "error" in response.keys():
-		    		response["success"] = True
+		    	if "error" in response:
+		    		response["success"] = False
 		    	else:
-		    		resonse["success"] = False
+		    		response["success"] = True
 		        self.write(json.JSONEncoder().encode(response))
 		else:
 		   	self.write("Uploads have been disabled. Click <a href=\"/\">here</a> to go back home");
