@@ -104,7 +104,7 @@ function doupdate(status){
 		$("#elapsedtime").html(minutes+":"+seconds);
 	}
 	var timeremaining = Player.nowplaying.length - elapsedTime;
-	var hoursremaining = Math.floor(elapsedTime / 3600);
+	var hoursremaining = Math.floor(timeremaining / 3600);
 	timeremaining = timeremaining - hours * 3600;
 	var minutesremaining = Math.floor(timeremaining / 60);
 	var secondsremaining = Math.floor(timeremaining - minutes * 60);
