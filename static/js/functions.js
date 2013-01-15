@@ -18,11 +18,17 @@
 */
 
 $(document).ready(function(){
-	getstatus();
 	//$('#shufflebtn').tooltip({placement:"bottom"})
 	//$('#repeatbtn').tooltip({placement:"bottom"})
 	$('#uploadbtn').tooltip({title: "Upload songs to your RaspberryPi and add them to the library", placement:"bottom"})
+	// getstatus();
+	statusUpdater();
 })
+
+function statusUpdater(){ // Refreshes the stats shown on the page by sending off periodic ajax requests
+	getstatus();
+	setTimeout(statusUpdater,500);
+}
 
 function ajaxRequest(url, callbackfunction, param1){ //param1 is optional, callbackfunction is not though an empty function is an ok parameter
 	
