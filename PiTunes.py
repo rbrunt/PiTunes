@@ -119,7 +119,7 @@ class now_playing(tornado.web.RequestHandler):
 			if settings.DEBUG: print "Connection to MPD lost, trying to reconnect..."
 			connectToClient()
 			current = client.currentsong()
-		response = json.dumps({"song":{"title":current['title'],"artist":current['artist'],"album":current['album']}})
+		response = json.dumps({"song":{"title":current['title'],"artist":current['artist'],"album":current['album'],"length":current["time"]}})
 		self.write(response)
 		
 class get_volume(tornado.web.RequestHandler):

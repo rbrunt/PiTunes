@@ -22,6 +22,7 @@ $(document).ready(function(){
 	//$('#repeatbtn').tooltip({placement:"bottom"})
 	$('#uploadbtn').tooltip({title: "Upload songs to your RaspberryPi and add them to the library", placement:"bottom"})
 	// getstatus();
+	getNowPlaying();
 	statusUpdater();
 })
 
@@ -102,6 +103,17 @@ function doupdate(status){
 	} else {
 		$("#elapsedtime").html(minutes+":"+seconds);
 	}
+	var timeremaining = Player.nowplaying.length - elapsedTime;
+	var hoursremaining = Math.floor(elapsedTime / 3600);
+	timeremaining = timeremaining - hours * 3600;
+	var minutesremaining = Math.floor(timeremaining / 60);
+	var secondsremaining = Math.floor(timeremaining - minutes * 60);
+	console.log("Elapsed Time: "+hoursremaining+":"+minutesremaining+":"+secondsremaining);
+	if (hours=!0){
+		$("#elapsedtime").html("-"+hoursremaining+":"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
+	} else {
+		$("#elapsedtime").html("-"+minutesremaining+""+secondsremaining+"("+Player.nowplaying.length+")");
+	}
 
 }
 
@@ -119,6 +131,7 @@ function getstatus(){
 function updatenowplaying(songobj){
 	nowplaying = songobj.song.artist + " - " + songobj.song.title;
 	$("#nowplaying").html(nowplaying);
+	Player.nowplaying.length=parseInt(songobj.song.length);
 }
 
 function getNowPlaying(){
