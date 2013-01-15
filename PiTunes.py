@@ -35,6 +35,9 @@ import tornado.template
 import uuid
 import settings # Local settings file
 
+def connectToClient(host=settings.HOSTNAME,port=settings.MPD_PORT):
+	client.connect(host,port)
+
 def fadeout(timeout=0.3):
 	"""Fades out the music, then pauses it. Much nicer sounding than an abrupt stop...
 
@@ -110,7 +113,11 @@ def getalbumart():
 
 class now_playing(tornado.web.RequestHandler):
 	def get(self):
-		current = client.currentsong()
+		try:
+			current = client.currentsong()
+		except ConnectionError:
+			connectToClient()
+			current = client.currentsong()
 		response = json.dumps({"song":{"title":current['title'],"artist":current['artist'],"album":current['album']}})
 		self.write(response)
 		
@@ -239,7 +246,7 @@ if __name__=="__main__":
 	client = mpd.MPDClient()
 	client.timeout = 10
 	client.idletimeout = None
-	client.connect(settings.HOSTNAME,settings.MPD_PORT)
+	connectToClient()
 
 	print "Starting web service on port %i..." % (settings.PORT)
 	application.listen(settings.PORT)
