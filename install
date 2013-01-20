@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
+# Ensure script is being run as root
 if [[ `whoami` != "root" ]]; then
     echo "You must be root to run this installer."
     exit 1
 fi
 
-packages=([0]="tornado" [1]="python-mpd")
 
+# Function to check whether a given Python package is installed
+# Returns 0 if the package is installed, non-zero otherwise
 function isInstalled () {
     pip freeze | grep $1 > /dev/null
     return $?
 }
 
-
+# Check whether pip is installed
+# Download and install pip if necessary
 which pip > /dev/null
 if [[ $? -ne 0 ]]; then
     echo "Installing pip..."
@@ -26,6 +29,9 @@ else
     echo "pip is already installed."
 fi
 
+# Check whether the packages in the package list are installed
+# Install any missing packages through pip
+packages=([0]="tornado" [1]="python-mpd")
 for i in 0 1; do
     var=`isInstalled ${packages[$i]}`
     if [[ var -ne 0 ]]; then
