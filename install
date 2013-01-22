@@ -24,13 +24,13 @@ fi
 # Check whether the packages in the package list are installed
 # Install any missing packages through pip
 packages=([0]="tornado" [1]="python-mpd")
-for i in 0 1; do
-    pip freeze | grep ${packages[$i]} > /dev/null
+for p in ${packages[@]}; do
+    pip freeze | grep $p > /dev/null
     if [[ $? -ne 0 ]]; then
-        echo "Installing package ${packages[$i]}..."
+        echo "Installing package $p..."
         pip install $package
     else
-        echo "Package ${packages[$i]} is already installed."
+        echo "Package $p is already installed."
     fi
 done
 
