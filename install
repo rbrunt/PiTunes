@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Ensure script is being run as root
+if [[ `whoami` != "root" ]]; then
+    echo "You must be root to run this installer."
+    exit 1
+fi
+
+# Download and install setuptools
+PY_VER=`python -V | sed -r 's/Python ([0-9]\.[0-9])\.[0-9]/\1/g'`
+SETUPTOOLS="pypi.python.org/packages/$PY_VER/s/setuptools/setuptools-0.6c11-py$PY_VER.egg"
+for f in `ls | grep setuptools-0.6c11`; do
+    if [[ ! $f =~ .egg$ ]]; then
+        FNAME=`echo $f | sed -r 's/(.*)(\.[a-z.]{3,7})$/\1.egg/g'`
+        mv $f $FNAME
+    fi
+done
+./$SETUPTOOLS
+rm $SETUPTOOLS
+
+# Check whether pip is installed
+# Download and install pip if necessary
+which pip > /dev/null
+if [[ $? -ne 0 ]]; then
+    echo "Installing pip..."
+    wget pypi.python.org/packages/source/p/pip/pip-1.2.1.tar.gz
+    tar -xf pip-1.2.1.tar.gz
+    cd pip-1.2.1
+    python setup.py install
+    cd ..
+    rm -r pip-1.2.1*
+else
+    echo "pip is already installed."
+fi
+
+# Check whether the packages in the package list are installed
+# Install any missing packages through pip
+packages=([0]="tornado" [1]="python-mpd")
+for p in ${packages[@]}; do
+    pip freeze | grep $p > /dev/null
+    if [[ $? -ne 0 ]]; then
+        echo "Installing package ${packages[$i]}..."
+        pip install $package
+    else
+        echo "Package ${packages[$i]} is already installed."
+    fi
+done
+
+exit 0
