@@ -7,15 +7,17 @@ if [[ `whoami` != "root" ]]; then
 fi
 
 # Download and install setuptools
-PY_VER=`python -V | sed -r 's/Python ([0-9]\.[0-9])\.[0-9]/\1/g'`
-SETUPTOOLS="pypi.python.org/packages/$PY_VER/s/setuptools/setuptools-0.6c11-py$PY_VER.egg"
+PY_VER=`python -c 'import sys; print sys.version[:3]'`
+SETUPTOOLS="setuptools-0.6c11-py$PY_VER.egg"
+SETUPURL="pypi.python.org/packages/$PY_VER/s/setuptools/$SETUPTOOLS"
+wget $SETUPURL
 for f in `ls | grep setuptools-0.6c11`; do
     if [[ ! $f =~ .egg$ ]]; then
         FNAME=`echo $f | sed -r 's/(.*)(\.[a-z.]{3,7})$/\1.egg/g'`
         mv $f $FNAME
     fi
 done
-./$SETUPTOOLS
+sh $SETUPTOOLS
 rm $SETUPTOOLS
 
 # Check whether pip is installed
@@ -39,10 +41,10 @@ packages=([0]="tornado" [1]="python-mpd")
 for p in ${packages[@]}; do
     pip freeze | grep $p > /dev/null
     if [[ $? -ne 0 ]]; then
-        echo "Installing package ${packages[$i]}..."
-        pip install $package
+        echo "Installing package $p..."
+        pip install $p
     else
-        echo "Package ${packages[$i]} is already installed."
+        echo "Package $p is already installed."
     fi
 done
 
