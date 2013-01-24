@@ -6,6 +6,7 @@ if [[ `whoami` != "root" ]]; then
     exit 1
 fi
 
+<<<<<<< HEAD
 # Download and install setuptools
 PY_VER=`python -V | sed -r 's/Python ([0-9]\.[0-9])\.[0-9]/\1/g'`
 SETUPTOOLS="pypi.python.org/packages/$PY_VER/s/setuptools/setuptools-0.6c11-py$PY_VER.egg"
@@ -18,6 +19,8 @@ done
 ./$SETUPTOOLS
 rm $SETUPTOOLS
 
+=======
+>>>>>>> 5e5d0ea9afdc323b205c4c0122e1ca77172f239f
 # Check whether pip is installed
 # Download and install pip if necessary
 which pip > /dev/null
@@ -39,10 +42,14 @@ packages=([0]="tornado" [1]="python-mpd")
 for p in ${packages[@]}; do
     pip freeze | grep $p > /dev/null
     if [[ $? -ne 0 ]]; then
+<<<<<<< HEAD
         echo "Installing package ${packages[$i]}..."
+=======
+        echo "Installing package $p..."
+>>>>>>> 5e5d0ea9afdc323b205c4c0122e1ca77172f239f
         pip install $package
     else
-        echo "Package ${packages[$i]} is already installed."
+        echo "Package $p is already installed."
     fi
 done
 
