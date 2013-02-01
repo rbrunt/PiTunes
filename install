@@ -48,4 +48,18 @@ for p in ${packages[@]}; do
     fi
 done
 
+# Confirm that apt-get is installed, and check for mpd
+# Install mpd if necessary
+which mpd > /dev/null
+if [[ $? -ne 0 ]]; then
+    which apt-get > /dev/null
+    if [[ $? -eq 0 ]]; then
+        apt-get install mpd
+    else
+        echo "Couldn't detect apt-get. Using your package manager, install the package 'mpd'."
+    fi
+else
+    echo "You've already installed mpd."
+fi
+
 exit 0
