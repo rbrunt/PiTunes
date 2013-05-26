@@ -162,6 +162,41 @@ class playpause(tornado.web.RequestHandler):
 		elif status == "play":
 			fadeout()
 
+
+class XHR_UploadHandler(tornado.web.RequestHandler):
+	def get(self):
+		self.redirect("/")
+	def post(self):
+		if settings.ALLOW_UPLOADS:
+				response = {"success":False} # initalise the response dict (turned into JSON later)
+
+				if settings.DEBUG: print "Receiving Upload..."
+				data = self.request.body
+				if settings.DEBUG: print self.request.headers
+				if not data:
+					self.write("Payload expected.")
+					self.set_status(500)
+					return
+				try:
+					#output_file = open(settings.UPLOAD_PATH + filename + uuid.uuid4() + extension, 'w') # Add a random uuid to end of filename to stop there being duplicates.
+					output_file = open(settings.UPLOAD_PATH + urllib.unquote(self.request.headers.get("X-File-Name")), 'w')
+					output_file.write(data)
+					output_file.close()
+				except:
+					if settings.DEBUG: print "there was a problem saving the file"
+					response["error"] = "There was an error saving the file to disk"
+
+				if "error" in response:
+					response["success"] = False
+				else:
+					response["success"] = True
+				self.write(json.JSONEncoder().encode(response))
+		else:
+			self.write("Uploads have been disabled. Click <a href=\"/\">here</a> to go back home");
+
+
+
+
 class uploadHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.redirect("/")
@@ -238,7 +273,8 @@ application = tornado.web.Application(
 	(r"/api/previous", prevhandler),
 	(r"/api/search/(.*)(/[a-z]{1,6})?", searchhandler),
 #	(r"/api/seek/([0-9]{1,3})",seekhandler),
-	(r"/upload", uploadHandler),
+#	(r"/upload", uploadHandler),
+	(r"/XHR_Upload", XHR_UploadHandler),
 	(r"/(.*)", MainHandler)
 ], **tornadosettings)
 

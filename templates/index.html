@@ -29,6 +29,8 @@
 		-------------------------------------------------- */
 		.qq-upload-list {
 			text-align: left;
+			max-height: 250px;
+			overflow-y: auto;
 		}
 	 
 		/* For the bootstrapped demos */
@@ -42,6 +44,10 @@
 	 
 		.alert-error .qq-upload-failed-text {
 			display: inline;
+		}
+		.qq-upload-drop-area{
+			padding:0;
+			margin:0;
 		}
     </style>
 </head>
@@ -82,7 +88,7 @@
 				<button class="btn btn-inverse btn-large" id="nextbtn" type="button" onclick="nextsong();"><i class="icon-step-forward"></i></button>
 			</div> -->
 			<p class="pull-left" id="elapsedtime">3:23<p>
-			<div class="progress span9"><div id="timebar" class="bar" style="width: 60%;"></div></div>
+			<div class="progress span9"><div id="timebar" class="bar" style="width: 0%;"></div></div>
 			<p class="pull-left" id="timeremaining">-1:03</p>
 <!-- 			<div class="btn-group pull-left">
 				<button class="btn" id="shufflebtn" type="button" title="Shuffle"><i class="icon-random"></i></button>
@@ -102,13 +108,9 @@
     			<h3>Upload songs</h3>
     		</div>
      		<div id="uploadbox" class="modal-body">
-    			<form enctype="multipart/form-data" action="/upload" method="post">
-    				<p>To upload a song or album, just drag and drop them onto this window, or browse for them on your computer</p>
-    				<input type="file" name="songupload" multiple>
-					<input type="submit" value="upload">
-    			</form>
+    			<p>To upload a song or album, just drag and drop them onto this window, or browse for them on your computer</p>
+    			<div id="bootstrapped-fine-uploader"></div>
     		</div>
-    		<div id="bootstrapped-fine-uploader"></div>
     		<div class="modal-footer">
     			<a href="#" class="btn btn-active" data-dismiss="modal">Close</a>
     		</div>
@@ -130,15 +132,15 @@
 			var uploader = new qq.FineUploader({
 				element: document.getElementById('bootstrapped-fine-uploader'),
 				allowedExtensions: ["mp3","ogg","flac","m4a"],
-				forceMulitpart: true,
+				forceMulitpart: false,
 				request: {
-					endpoint: '/upload'
+					endpoint: '/XHR_Upload'
 				},
 				text: {
 					uploadButton: '<i class="icon-upload icon-white"></i> Click here to browse, or drag and drop a file to upload'
 				},
 				template: '<div class="qq-uploader">' +
-						'<pre class="qq-upload-drop-area span6"><span>{dragZoneText}</span></pre>' +
+						'<pre class="qq-upload-drop-area"><span>{dragZoneText}</span></pre>' +
 						'<div class="qq-upload-button btn btn-success" style="width: auto;">{uploadButtonText}</div>' +
 						'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
 						'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
@@ -147,7 +149,7 @@
 					success: 'alert alert-success',
 					fail: 'alert alert-error'
 				},
-				debug: true
+				debug: false
 			});
 		}
 		window.onload = createUploader;
