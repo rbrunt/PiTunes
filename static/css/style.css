@@ -28,3 +28,35 @@
 	padding-bottom:5px;
 	color:#333333;
 }
+
+#elapsedtime{
+	text-align:left;
+}
+
+#timeremaining{
+	text-align:right;
+}
+
+/* Fine Uploader
+-------------------------------------------------- */
+.qq-upload-list {
+	text-align: left;
+	max-height: 250px;/* Force max height and scrolling if you upload loads of files instead of going off the bottom of the page*/
+	overflow-y: auto;
+}
+/* For the bootstrapped demos */
+li.alert-success {
+	background-color: #DFF0D8;
+}
+
+li.alert-error {
+	background-color: #F2DEDE;
+}
+
+.alert-error .qq-upload-failed-text {
+	display: inline;
+}
+.qq-upload-drop-area{ /* Makes the drag and drop target box behave */
+	padding:0;
+	margin:0;
+}

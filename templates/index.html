@@ -24,35 +24,10 @@
 	<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="static/css/font-awesome.css">
     <link rel="stylesheet" href="static/css/style.css">
-    <style>
-	    /* Fine Uploader
-		-------------------------------------------------- */
-		.qq-upload-list {
-			text-align: left;
-			max-height: 250px;
-			overflow-y: auto;
-		}
-	 
-		/* For the bootstrapped demos */
-		li.alert-success {
-			background-color: #DFF0D8;
-		}
-	 
-		li.alert-error {
-			background-color: #F2DEDE;
-		}
-	 
-		.alert-error .qq-upload-failed-text {
-			display: inline;
-		}
-		.qq-upload-drop-area{
-			padding:0;
-			margin:0;
-		}
-    </style>
 </head>
 <body>
 	<div class="container">
+
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
@@ -80,25 +55,16 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="row" id="controls">
-			<div class="span12">
-			<!-- <div class="btn-group pull-left">
-				<button class="btn btn-inverse btn-large" id="prevbtn" type="button" onclick="prevsong();"><i class="icon-step-backward"></i></button>
-				<button class="btn btn-primary btn-large" id="playpausebtn" type="button" onclick="playPause();"><i class="icon-play"></i></button>
-				<button class="btn btn-inverse btn-large" id="nextbtn" type="button" onclick="nextsong();"><i class="icon-step-forward"></i></button>
-			</div> -->
-			<p class="pull-left" id="elapsedtime">3:23<p>
-			<div class="progress span9"><div id="timebar" class="bar" style="width: 0%;"></div></div>
-			<p class="pull-left" id="timeremaining">-1:03</p>
-<!-- 			<div class="btn-group pull-left">
-				<button class="btn" id="shufflebtn" type="button" title="Shuffle"><i class="icon-random"></i></button>
-				<button class="btn" id="repeatbtn" type="button" title="Repeat"><i class="icon-repeat"></i></button>
-			</div> -->
-		</div>
+				<p class="pull-left span2" id="elapsedtime">3:23<p>
+				<div class="progress span9" id="timebarouter"><div id="timebar" class="bar" style="width: 0%;"></div></div>
+				<p class="pull-right span1" id="timeremaining">-1:03</p>
     	</div>
+
 		<div id="results">
 			<ul id="resultlist">
-				Type a search term
+				<p>Type a search term</p>
 			</ul>	
 		</div>
 
@@ -115,7 +81,9 @@
     			<a href="#" class="btn btn-active" data-dismiss="modal">Close</a>
     		</div>
     	</div>
+
 	</div>
+
 	<footer class="footer">
 		<div id="container">
 			<p>PiTunes by <a href="http://richardbrunt.co.uk/">Richard Brunt</a></p>
@@ -127,11 +95,14 @@
 	<script src="static/js/bootstrap.min.js"></script>
 	<script src="static/js/functions.js"></script>
 	<script src="static/fineuploader/client/fineuploader.js"></script>
-	<script>
+	
+	<script> // Builds the fineuploader:
 		function createUploader() {
 			var uploader = new qq.FineUploader({
 				element: document.getElementById('bootstrapped-fine-uploader'),
-				allowedExtensions: ["mp3","ogg","flac","m4a"],
+				validation: {
+					allowedExtensions: ["mp3","ogg","flac","m4a"]
+				},
 				forceMulitpart: false,
 				request: {
 					endpoint: '/XHR_Upload'
@@ -148,6 +119,9 @@
 				classes: {
 					success: 'alert alert-success',
 					fail: 'alert alert-error'
+				},
+				showMessage: function(message) { // message if wrong file type...
+					$('#uploadbox').append('<div class="alert alert-error">' + message + '</div>');
 				},
 				debug: false
 			});
