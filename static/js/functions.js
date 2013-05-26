@@ -121,6 +121,7 @@ function doupdate(status){
 	}
 	elapsedTime = parseFloat(status.elapsed);
 	$("#elapsedtime").html(convertTime(elapsedTime)+" / "+convertTime(Player.nowplaying.length));
+	$("#timebar").width(elapsedTime/Player.nowplaying.length*100+"%");
 	$("#timeremaining").html("-"+convertTime(Player.nowplaying.length - elapsedTime));
 }
 
